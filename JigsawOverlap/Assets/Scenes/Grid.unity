@@ -225,11 +225,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4988283359225484668, guid: a2078003456a14a41b9137a6f016d06f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -0.16
       objectReference: {fileID: 0}
     - target: {fileID: 4988283359225484668, guid: a2078003456a14a41b9137a6f016d06f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 12.74
+      value: 10.05
       objectReference: {fileID: 0}
     - target: {fileID: 4988283359225484668, guid: a2078003456a14a41b9137a6f016d06f, type: 3}
       propertyPath: m_LocalPosition.z
@@ -307,6 +307,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Cell: {fileID: 953145392}
+  CellList: []
+  TileList: []
 --- !u!4 &2087124697
 Transform:
   m_ObjectHideFlags: 0
