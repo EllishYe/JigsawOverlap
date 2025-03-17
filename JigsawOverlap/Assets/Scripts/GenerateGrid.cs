@@ -96,7 +96,7 @@ public class GenerateGrid : MonoBehaviour
             for (int j = 0; j < 20; j++)
             {
                 GameObject newcell = Instantiate(Cell);
-                newcell.transform.position = new Vector3(i - 10, j - 10, -10);
+                newcell.transform.position = new Vector3(i, -j, 0);
                 newcell.name = "Cell" + i.ToString() + j.ToString();
                 CellList.Add(newcell);
             }
@@ -114,7 +114,7 @@ public class GenerateGrid : MonoBehaviour
                 for (int i = 0; i < 3; i++)
                     for (int j = 0; j < 3; j++)
                     {
-                        Vector2 CurrentCellPos = new Vector2(tile.TilePosition.x + i, tile.TilePosition.y + j);
+                        Vector2 CurrentCellPos = new Vector2(tile.TilePosition.x + i, tile.TilePosition.y - j);
                         if (CurrentCellPos == CellPos)
                         {
                             if (PreviousColor == 2)
