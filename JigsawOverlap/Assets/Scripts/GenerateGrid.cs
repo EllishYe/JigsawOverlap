@@ -53,6 +53,8 @@ public class GenerateGrid : MonoBehaviour
 
             // Update the Colors matrix with the rotated version
             Colors = rotatedMatrix;
+
+            Rotation = 0;
         }
 
         private int3x3 Rotate90Clockwise(int3x3 matrix)
