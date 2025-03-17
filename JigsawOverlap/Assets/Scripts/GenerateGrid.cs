@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GenerateGrid : MonoBehaviour
@@ -54,35 +55,37 @@ public class GenerateGrid : MonoBehaviour
             // Update the Colors matrix with the rotated version
             Colors = rotatedMatrix;
 
-            Rotation = 0;
+            // Keep the rotation cumulative
+            Rotation = 0; // Reset to 0 after applying the rotation
         }
 
         private int3x3 Rotate90Clockwise(int3x3 matrix)
         {
             return new int3x3(
-                matrix[2][0], matrix[1][0], matrix[0][0], // Row 0 becomes Column 2
-                matrix[2][1], matrix[1][1], matrix[0][1], // Row 1 becomes Column 1
-                matrix[2][2], matrix[1][2], matrix[0][2]  // Row 2 becomes Column 0
+                new int3(matrix.c0.z, matrix.c1.z, matrix.c2.z), // Column 0 becomes Row 2
+                new int3(matrix.c0.y, matrix.c1.y, matrix.c2.y), // Column 1 becomes Row 1
+                new int3(matrix.c0.x, matrix.c1.x, matrix.c2.x)  // Column 2 becomes Row 0
             );
         }
 
         private int3x3 Rotate180(int3x3 matrix)
         {
             return new int3x3(
-                matrix[2][2], matrix[2][1], matrix[2][0], // Row 2 reversed
-                matrix[1][2], matrix[1][1], matrix[1][0], // Row 1 reversed
-                matrix[0][2], matrix[0][1], matrix[0][0]  // Row 0 reversed
+                new int3(matrix.c2.z, matrix.c1.z, matrix.c0.z), // Row 2 reversed
+                new int3(matrix.c2.y, matrix.c1.y, matrix.c0.y), // Row 1 reversed
+                new int3(matrix.c2.x, matrix.c1.x, matrix.c0.x)  // Row 0 reversed
             );
         }
 
         private int3x3 Rotate270Clockwise(int3x3 matrix)
         {
             return new int3x3(
-                matrix[0][2], matrix[1][2], matrix[2][2], // Row 0 becomes Column 0
-                matrix[0][1], matrix[1][1], matrix[2][1], // Row 1 becomes Column 1
-                matrix[0][0], matrix[1][0], matrix[2][0]  // Row 2 becomes Column 2
+                new int3(matrix.c2.x, matrix.c1.x, matrix.c0.x), // Column 2 becomes Row 0
+                new int3(matrix.c2.y, matrix.c1.y, matrix.c0.y), // Column 1 becomes Row 1
+                new int3(matrix.c2.z, matrix.c1.z, matrix.c0.z)  // Column 0 becomes Row 2
             );
         }
+
 
     }
     void Start()
@@ -99,7 +102,8 @@ public class GenerateGrid : MonoBehaviour
             {
                 GameObject newcell = Instantiate(Cell);
                 newcell.transform.position = new Vector3(i, -j, 0);
-                newcell.name = "Cell" + i.ToString() + j.ToString();
+                newcell.name = "Cell " + i.ToString() + "_" + j.ToString();
+                newcell.transform.GetChild(0).GetComponent<SpriteRenderer>().color = Color.gray;
                 CellList.Add(newcell);
             }
         }
@@ -109,39 +113,57 @@ public class GenerateGrid : MonoBehaviour
     {
         foreach (GameObject Cell in CellList)
         {
-            Vector2 CellPos = Cell.transform.position;
+            Vector2 CellPos = new Vector2(Cell.transform.position.x, Cell.transform.position.y);
+            List<int> ColorsOverlayed = new List<int>();
+
             foreach (Tile tile in TileList)
             {
-                int PreviousColor = 2;
+                //each cell in tile
                 for (int i = 0; i < 3; i++)
+                {
                     for (int j = 0; j < 3; j++)
                     {
-                        Vector2 CurrentCellPos = new Vector2(tile.TilePosition.x + i, tile.TilePosition.y - j);
-                        if (CurrentCellPos == CellPos)
+                        Vector2 CurrentCellPos = new Vector2(tile.TilePosition.x + i, -(tile.TilePosition.y + j));
+                        //int PreviousColor = 2;
+
+                        if ((CurrentCellPos - CellPos).magnitude <= .1)
                         {
-                            if (PreviousColor == 2)
-                            {
-                                PreviousColor = tile.Colors[i][j];
-                            }
-                            else
-                            {
-                                //Overlap Caculation here...
-                            }
-
-                            Color CellColor = Color.gray;
-
-                            if (PreviousColor == 0)
-                            {
-                                CellColor = Color.black;
-                            }
-                            else if (PreviousColor == 1)
-                            {
-                                CellColor = Color.white;
-                            }
-
-                            Cell.transform.GetChild(0).GetComponent<Renderer>().material.color = CellColor;
+                            ColorsOverlayed.Add(tile.Colors[i][j]);
                         }
                     }
+                }
+            }
+
+            if (ColorsOverlayed.Count > 0)
+            {
+                int colorNow = 2;
+                for (int i = 0; i <= ColorsOverlayed.Count; i++)
+                {
+                    if (i == 0)
+                    {
+                        colorNow = ColorsOverlayed[0];
+                    }
+                    else
+                    {
+                        //if(ColorsOverlayed[i]) 跟 colorNow对比，然后替换colorNow，直到得到最终的颜色
+                    }
+                }
+
+                if (colorNow == 0)
+                {
+                    Cell.transform.GetChild(0).GetComponent<SpriteRenderer>().color = Color.black;
+
+                }
+                else if (colorNow == 1)
+                {
+                    Cell.transform.GetChild(0).GetComponent<SpriteRenderer>().color = Color.white;
+
+                }
+
+            }
+            else
+            {
+                Cell.transform.GetChild(0).GetComponent<SpriteRenderer>().color = Color.gray;
             }
         }
     }
@@ -163,10 +185,13 @@ public class GenerateGrid : MonoBehaviour
         {
             foreach (Tile tile in TileList)
             {
-                tile.RotateTile();
+                if (tile.Rotation != 0)
+                    tile.RotateTile();
             }
+            UpdateCellColor();
         }
 
 
     }
 }
+
