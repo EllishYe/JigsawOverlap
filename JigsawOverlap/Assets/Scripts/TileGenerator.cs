@@ -20,7 +20,7 @@ public class TileGenerator : MonoBehaviour
     {
         // 生成按钮
         generateButton.onClick.AddListener(GenerateTiles);
-        
+
 
     }
 
@@ -210,10 +210,10 @@ public class TileGenerator : MonoBehaviour
                 Color cellColor = (pattern[y, x] == 1) ? Color.black : Color.white;
                 img.color = cellColor;
 
-                Debug.Log($"Cell created at [{x},{y}] with color: {(pattern[y, x] == 1 ? "Black" : "White")}");
+                //Debug.Log($"Cell created at [{x},{y}] with color: {(pattern[y, x] == 1 ? "Black" : "White")}");
 
-                
-                
+
+
                 // 添加 BoxCollider2D 以支持重叠检测
                 BoxCollider2D collider = cell.GetComponent<BoxCollider2D>();
                 if (collider == null)
@@ -227,7 +227,7 @@ public class TileGenerator : MonoBehaviour
                 //  挂载 Cell.cs 脚本
                 Cell cellScript = cell.AddComponent<Cell>();
                 cellScript.InitializeColor(cellColor);
-                
+
             }
         }
 
@@ -243,7 +243,7 @@ public class TileGenerator : MonoBehaviour
         // 添加到保存列表
         generatedTiles.Add(tile);
 
-        Debug.Log("Tile generated and added to list.");
+        //Debug.Log("Tile generated and added to list.");
     }
 
 

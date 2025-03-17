@@ -9,10 +9,11 @@ public class TileDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     private RectTransform rectTransform;
     private Canvas canvas;
     private CanvasGroup canvasGroup;
-    private LayoutGroup parentLayoutGroup; // ¸¸ÎïÌåµÄ²¼¾Ö×é¼þ
+    private LayoutGroup parentLayoutGroup; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
-    public float gridSize = 50f; // Íø¸ñ¾«¶È£¬µ¥Î»ÏñËØ
-    private bool isDragging = false; // ±êÊ¶µ±Ç°ÊÇ·ñÔÚÍÏ×§ÖÐ
+    public float gridSize = 50f; // ï¿½ï¿½ï¿½ñ¾«¶È£ï¿½ï¿½ï¿½Î»ï¿½ï¿½ï¿½ï¿½
+    private bool isDragging = false; // ï¿½ï¿½Ê¶ï¿½ï¿½Ç°ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½×§ï¿½ï¿½
+
 
 
     private void Awake()
@@ -21,7 +22,7 @@ public class TileDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         canvas = GetComponentInParent<Canvas>();
         canvasGroup = GetComponent<CanvasGroup>();
 
-        // »ñÈ¡¸¸ÎïÌåµÄ²¼¾Ö×é¼þ£¨Èç¹ûÓÐµÄ»°£©
+        // ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÐµÄ»ï¿½ï¿½ï¿½
         parentLayoutGroup = transform.parent.GetComponent<LayoutGroup>();
     }
 
@@ -29,10 +30,10 @@ public class TileDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        // ±ê¼Ç¿ªÊ¼ÍÏ×§
+        // ï¿½ï¿½Ç¿ï¿½Ê¼ï¿½ï¿½×§
         isDragging = true;
 
-        // Èç¹ûÓÐ²¼¾Ö×é¼þ£¬½ûÓÃËüÃÇ
+        // ï¿½ï¿½ï¿½ï¿½Ð²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         if (parentLayoutGroup != null)
         {
             parentLayoutGroup.enabled = false;
@@ -46,14 +47,14 @@ public class TileDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     public void OnDrag(PointerEventData eventData)
     {
         Vector2 pos;
-        // ½«Êó±êÆÁÄ»×ø±ê×ª»»Îª UI ÊÀ½ç×ø±ê
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä»ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½Îª UI ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         if (RectTransformUtility.ScreenPointToLocalPointInRectangle(
                 canvas.transform as RectTransform,
                 eventData.position,
                 canvas.worldCamera,
                 out pos))
         {
-            // ¸üÐÂÍÏ×§¹ý³ÌÖÐÎïÌåµÄÎ»ÖÃ
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½
             rectTransform.anchoredPosition = pos;
         }
 
@@ -63,7 +64,7 @@ public class TileDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     {
         isDragging = false;
 
-        // Èç¹ûÓÐ²¼¾Ö×é¼þ£¬½ûÓÃËüÃÇ
+        // ï¿½ï¿½ï¿½ï¿½Ð²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         if (parentLayoutGroup != null)
         {
             parentLayoutGroup.enabled = false;
@@ -71,33 +72,66 @@ public class TileDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         Debug.Log($"[End Drag] Tile position = {rectTransform.anchoredPosition}");
 
 
-        // »ñÈ¡ÍÏ¶¯½áÊøÊ±µÄÎ»ÖÃ²¢¼ÆËãÎü¸½µã
+        // ï¿½ï¿½È¡ï¿½Ï¶ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½Î»ï¿½Ã²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         Vector2 snappedPosition = GetSnappedPosition(rectTransform.anchoredPosition);
 
-        // ¸üÐÂÎïÌåÎ»ÖÃ£¬Ê¹ÆäÎü¸½µ½Íø¸ñÖÐÐÄ
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½Ã£ï¿½Ê¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         rectTransform.anchoredPosition = snappedPosition;
 
-        // »Ö¸´Õý³£Í¸Ã÷¶È
+        // ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ï¿½ï¿½ï¿½
         canvasGroup.alpha = 1f;
         canvasGroup.blocksRaycasts = true;
 
         Debug.Log($"Tile {gameObject.name} dropped.");
 
-        // ÊÍ·Åºó£¬¼ì²é Cell µÄºÏ²¢Ð§¹û
+        // ï¿½Í·Åºó£¬¼ï¿½ï¿½ Cell ï¿½ÄºÏ²ï¿½Ð§ï¿½ï¿½
         Cell[] cells = GetComponentsInChildren<Cell>();
+
+        /*if (cells.Length > 0)
+            foreach (Cell cell in cells)
+            {
+                if (cell != this.gameObject.GetComponent<Cell>())
+                {
+                    print(this.gameObject);
+                    this.gameObject.GetComponent<Cell>().UpdateColor(cell);
+                }
+            }*/
+
+
         foreach (var cell in cells)
         {
             Collider2D[] overlaps = Physics2D.OverlapPointAll(cell.transform.position);
 
-            foreach (var overlap in overlaps)
+            if (overlaps.Length > 0)
             {
-                if (overlap.CompareTag("Cell"))
+                foreach (var overlap in overlaps)
                 {
-                    Cell otherCell = overlap.GetComponent<Cell>();
-                    if (otherCell != null)
+                    print("overlap    " + overlap);
+                    if (overlap.CompareTag("Cell"))
                     {
-                        cell.SendMessage("UpdateColor", otherCell, SendMessageOptions.DontRequireReceiver);
+                        Cell otherCell = overlap.GetComponent<Cell>();
+                        print("otherce;;    " + otherCell);
+
+                        otherCell.OverlapCells.Add(otherCell);
+                        print(otherCell.OverlapCells.Count);
+
+                        if (otherCell != null)
+                        {
+                            //cell.UpdateColor(otherCell);
+                        }
                     }
+                    // foreach (var overlap in overlaps)
+                    // {
+                    //     if (overlap.CompareTag("Cell"))
+                    //     {
+                    //         Cell otherCell = overlap.GetComponent<Cell>();
+                    //         if (otherCell != null)
+                    //         {
+                    //             otherCell
+                    //             //cell.SendMessage("UpdateColor", otherCell, SendMessageOptions.DontRequireReceiver);
+                    //     }
+                    //     }
+                    // }
                 }
             }
         }
@@ -105,31 +139,31 @@ public class TileDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
 
 
-    // Snapping Âß¼­£ºÈÃÎïÌå¶ÔÆëµ½Íø¸ñ
+    // Snapping ï¿½ß¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ëµ½ï¿½ï¿½ï¿½ï¿½
     private Vector2 GetSnappedPosition(Vector2 originalPosition)
     {
-        // ¼ÆËãÎïÌåµÄÎ»ÖÃ£¬ËÄÉáÎåÈëµ½×î½üµÄÍø¸ñÎ»ÖÃ
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½Ã£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ëµ½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½
         float snappedX = Mathf.Round(originalPosition.x / gridSize) * gridSize;
         float snappedY = Mathf.Round(originalPosition.y / gridSize) * gridSize;
 
-        // ·µ»Ø¸üÐÂºóµÄÎü¸½Î»ÖÃ
+        // ï¿½ï¿½ï¿½Ø¸ï¿½ï¿½Âºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½
         return new Vector2(snappedX, snappedY);
     }
 
-    
-    // rotating Âß¼­£ºÈç¹ûÔÚonDragµÄ¹ý³ÌÖÐÍ¬Ê±¼ì²â¿Õ¸ñÊäÈë£¬Ôòrotate tile
+
+    // rotating ï¿½ß¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½onDragï¿½Ä¹ï¿½ï¿½ï¿½ï¿½ï¿½Í¬Ê±ï¿½ï¿½ï¿½Õ¸ï¿½ï¿½ï¿½ï¿½ë£¬ï¿½ï¿½rotate tile
     private void Update()
     {
         if (isDragging && Input.GetKeyDown(KeyCode.Space))
         {
-            // Ðý×ª Tile 90 ¶È
+            // ï¿½ï¿½×ª Tile 90 ï¿½ï¿½
             RotateTile();
         }
     }
 
-    // Ðý×ª Tile 90 ¶È
+    // ï¿½ï¿½×ª Tile 90 ï¿½ï¿½
     private void RotateTile()
     {
-        rectTransform.Rotate(0, 0, 90); // Ë³Ê±ÕëÐý×ª 90 ¶È
+        rectTransform.Rotate(0, 0, 90); // Ë³Ê±ï¿½ï¿½ï¿½ï¿½×ª 90 ï¿½ï¿½
     }
 }
