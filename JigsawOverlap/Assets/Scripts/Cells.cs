@@ -11,45 +11,43 @@ public class Cell : MonoBehaviour
     private Color currentColor;
     private int overlapCount = 0;
 
-    private bool isOverlapping = false;  // ï¿½ï¿½ï¿½Ú±ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½Ú½ï¿½ï¿½ï¿½
-    private float overlapDistance = 0.5f; // ï¿½ï¿½ï¿½Ã½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµ
-    public List<Cell> OverlapCells;
+
 
     private void Awake()
     {
         cellImage = GetComponent<Image>();
     }
 
-    // ï¿½ï¿½Ê¼ï¿½ï¿½ Cell ï¿½ï¿½ï¿½ï¿½É«
+    // ³õÊ¼»¯ Cell µÄÑÕÉ«
     public void InitializeColor(Color color)
     {
-        // ï¿½ï¿½ï¿½ originalColor ï¿½ï¿½Î´ï¿½ï¿½ï¿½Ã£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½Ê¼ï¿½ï¿½É«
+        // Èç¹û originalColor »¹Î´ÉèÖÃ£¬ÔòÉèÖÃÎª³õÊ¼ÑÕÉ«
         if (originalColor == default(Color))
         {
             originalColor = color;
         }
 
-        // ï¿½ï¿½ currentColor ï¿½ï¿½Ê¼ï¿½ï¿½Îª originalColor
+        // ½« currentColor ³õÊ¼»¯Îª originalColor
         currentColor = originalColor;
         cellImage.color = currentColor;
     }
 
-    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Cell ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½
+    // µ±ÓÐÆäËû Cell ½øÈëÊ±´¥·¢
     private void OnTriggerEnter2D(Collider2D other)
     {
 
-
+        
         if (other.CompareTag("Cell"))
         {
             overlapCount++;
-            //UpdateColor(other.GetComponent<Cell>());
+            UpdateColor(other.GetComponent<Cell>());
 
-            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½Äµï¿½ï¿½ï¿½ï¿½ï¿½Ö¾
-            //Debug.Log($"Cell {name} entered overlap with {other.name}. Overlap count: {overlapCount}");
+            // ½»µþ·¢ÉúÊ±µÄµ÷ÊÔÈÕÖ¾
+            Debug.Log($"Cell {name} entered overlap with {other.name}. Overlap count: {overlapCount}");
         }
     }
 
-    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Cell ï¿½ë¿ªÊ±ï¿½ï¿½ï¿½ï¿½
+    // µ±ÆäËû Cell Àë¿ªÊ±´¥·¢
     private void OnTriggerExit2D(Collider2D other)
     {
         if (other.CompareTag("Cell"))
@@ -57,54 +55,54 @@ public class Cell : MonoBehaviour
             overlapCount--;
             if (overlapCount <= 0)
             {
-                RestoreColor(); // ï¿½Ë³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½Ô­É«
+                RestoreColor(); // ÍË³ö½»µþ£¬»Ö¸´Ô­É«
             }
-            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½Äµï¿½ï¿½ï¿½ï¿½ï¿½Ö¾
-            //Debug.Log($"Cell {name} exited overlap with {other.name}. Overlap count: {overlapCount}");
+            // ½»µþ½â³ýÊ±µÄµ÷ÊÔÈÕÖ¾
+            Debug.Log($"Cell {name} exited overlap with {other.name}. Overlap count: {overlapCount}");
         }
     }
 
 
 
 
-    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-    public void UpdateColor(Cell otherCell)
+    // ¸üÐÂÑÕÉ«£¨½»µþ¹æÔò£©
+    private void UpdateColor(Cell otherCell)
     {
         if (otherCell == null) return;
 
-        // Ö»ï¿½ï¿½ï¿½Ú½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â²Å½ï¿½ï¿½ï¿½ï¿½ï¿½É«ï¿½Ï²ï¿½
-        // if (originalColor != currentColor)
-        // {
-        // ï¿½ï¿½ï¿½ï¿½ï¿½ÂµÄºÏ²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É«ï¿½ï¿½ï¿½ï¿½
-        if (originalColor == Color.black && otherCell.originalColor == Color.black)
+        // Ö»ÓÐÔÚ½»µþµÄÇé¿öÏÂ²Å½øÐÐÑÕÉ«ºÏ²¢
+        if (originalColor != currentColor)
         {
-            currentColor = Color.white; // ï¿½ï¿½ + ï¿½ï¿½ = ï¿½ï¿½
-        }
-        else if (originalColor == Color.white && otherCell.originalColor == Color.white)
-        {
-            currentColor = Color.white; // ï¿½ï¿½ + ï¿½ï¿½ = ï¿½ï¿½
+            // ¸ù¾ÝÐÂµÄºÏ²¢¹æÔò½øÐÐÑÕÉ«¸üÐÂ
+            if (originalColor == Color.black && otherCell.originalColor == Color.black)
+            {
+                currentColor = Color.white; // ºÚ + ºÚ = °×
+            }
+            else if (originalColor == Color.white && otherCell.originalColor == Color.white)
+            {
+                currentColor = Color.white; // °× + °× = °×
+            }
+            else
+            {
+                currentColor = Color.black; // °× + ºÚ = ºÚ
+            }
+
+            // Ó¦ÓÃÐÂµÄÑÕÉ«
+            cellImage.color = currentColor;
+
+            Debug.Log($"Cell {name} color updated to: {currentColor}");
         }
         else
         {
-            currentColor = Color.black; // ï¿½ï¿½ + ï¿½ï¿½ = ï¿½ï¿½
+            // Èç¹ûÃ»ÓÐ½»µþ£¬±£³ÖÔ­Ê¼ÑÕÉ«
+            currentColor = originalColor;
+            cellImage.color = currentColor;
+            Debug.Log($"Cell {name} remains at original color: {originalColor}");
         }
-
-        // Ó¦ï¿½ï¿½ï¿½Âµï¿½ï¿½ï¿½É«
-        cellImage.color = currentColor;
-
-        Debug.Log($"Cell {name} color updated to: {currentColor}");
-        // }
-        // else
-        // {
-        // ï¿½ï¿½ï¿½Ã»ï¿½Ð½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô­Ê¼ï¿½ï¿½É«
-        // currentColor = originalColor;
-        // cellImage.color = currentColor;
-        // Debug.Log($"Cell {name} remains at original color: {originalColor}");
-        // }
     }
 
 
-    // ï¿½Ö¸ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½É«
+    // »Ö¸´³õÊ¼ÑÕÉ«
     private void RestoreColor()
     {
         currentColor = originalColor;

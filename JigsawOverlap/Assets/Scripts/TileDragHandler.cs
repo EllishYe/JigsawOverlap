@@ -9,10 +9,10 @@ public class TileDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     private RectTransform rectTransform;
     private Canvas canvas;
     private CanvasGroup canvasGroup;
-    private LayoutGroup parentLayoutGroup; // ������Ĳ������
+    private LayoutGroup parentLayoutGroup; // 
 
-    public float gridSize = 50f; // ���񾫶ȣ���λ����
-    private bool isDragging = false; // ��ʶ��ǰ�Ƿ�����ק��
+    public float gridSize = 50f; // 
+    private bool isDragging = false; // 
 
 
 
@@ -22,7 +22,6 @@ public class TileDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         canvas = GetComponentInParent<Canvas>();
         canvasGroup = GetComponent<CanvasGroup>();
 
-        // ��ȡ������Ĳ������������еĻ���
         parentLayoutGroup = transform.parent.GetComponent<LayoutGroup>();
     }
 
@@ -30,10 +29,10 @@ public class TileDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        // ��ǿ�ʼ��ק
+
         isDragging = true;
 
-        // ����в����������������
+
         if (parentLayoutGroup != null)
         {
             parentLayoutGroup.enabled = false;
@@ -47,14 +46,14 @@ public class TileDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     public void OnDrag(PointerEventData eventData)
     {
         Vector2 pos;
-        // �������Ļ����ת��Ϊ UI ��������
+        // 
         if (RectTransformUtility.ScreenPointToLocalPointInRectangle(
                 canvas.transform as RectTransform,
                 eventData.position,
                 canvas.worldCamera,
                 out pos))
         {
-            // ������ק�����������λ��
+            // 
             rectTransform.anchoredPosition = pos;
         }
 
@@ -64,7 +63,7 @@ public class TileDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     {
         isDragging = false;
 
-        // ����в����������������
+        // 
         if (parentLayoutGroup != null)
         {
             parentLayoutGroup.enabled = false;
@@ -72,19 +71,19 @@ public class TileDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         Debug.Log($"[End Drag] Tile position = {rectTransform.anchoredPosition}");
 
 
-        // ��ȡ�϶�����ʱ��λ�ò�����������
+        // 
         Vector2 snappedPosition = GetSnappedPosition(rectTransform.anchoredPosition);
 
-        // ��������λ�ã�ʹ����������������
+        // 
         rectTransform.anchoredPosition = snappedPosition;
 
-        // �ָ�����͸����
+        // 
         canvasGroup.alpha = 1f;
         canvasGroup.blocksRaycasts = true;
 
         Debug.Log($"Tile {gameObject.name} dropped.");
 
-        // �ͷź󣬼�� Cell �ĺϲ�Ч��
+        // 
         Cell[] cells = GetComponentsInChildren<Cell>();
 
         /*if (cells.Length > 0)
@@ -102,66 +101,65 @@ public class TileDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         {
             Collider2D[] overlaps = Physics2D.OverlapPointAll(cell.transform.position);
 
-            if (overlaps.Length > 0)
-            {
-                foreach (var overlap in overlaps)
-                {
-                    print("overlap    " + overlap);
-                    if (overlap.CompareTag("Cell"))
-                    {
-                        Cell otherCell = overlap.GetComponent<Cell>();
-                        print("otherce;;    " + otherCell);
+            //if (overlaps.Length > 0)
+            //{
+            //    foreach (var overlap in overlaps)
+            //    {
+            //        print("overlap    " + overlap);
+            //        if (overlap.CompareTag("Cell"))
+            //        {
+            //            Cell otherCell = overlap.GetComponent<Cell>();
+            //            print("otherce;;    " + otherCell);
 
-                        otherCell.OverlapCells.Add(otherCell);
-                        print(otherCell.OverlapCells.Count);
+            //            otherCell.OverlapCells.Add(otherCell);
+            //            print(otherCell.OverlapCells.Count);
 
-                        if (otherCell != null)
-                        {
-                            //cell.UpdateColor(otherCell);
-                        }
-                    }
-                    // foreach (var overlap in overlaps)
-                    // {
-                    //     if (overlap.CompareTag("Cell"))
-                    //     {
-                    //         Cell otherCell = overlap.GetComponent<Cell>();
-                    //         if (otherCell != null)
-                    //         {
-                    //             otherCell
-                    //             //cell.SendMessage("UpdateColor", otherCell, SendMessageOptions.DontRequireReceiver);
-                    //     }
-                    //     }
-                    // }
-                }
-            }
+            //            if (otherCell != null)
+            //            {
+            //                //cell.UpdateColor(otherCell);
+            //            }
+            //        }
+            //        // foreach (var overlap in overlaps)
+            //        // {
+            //        //     if (overlap.CompareTag("Cell"))
+            //        //     {
+            //        //         Cell otherCell = overlap.GetComponent<Cell>();
+            //        //         if (otherCell != null)
+            //        //         {
+            //        //             otherCell
+            //        //             //cell.SendMessage("UpdateColor", otherCell, SendMessageOptions.DontRequireReceiver);
+            //        //     }
+            //        //     }
+            //        // }
+            //    }
+            //}
         }
     }
 
 
 
-    // Snapping �߼�����������뵽����
+    // Snapping to Grids
     private Vector2 GetSnappedPosition(Vector2 originalPosition)
     {
-        // ���������λ�ã��������뵽���������λ��
+        
         float snappedX = Mathf.Round(originalPosition.x / gridSize) * gridSize;
         float snappedY = Mathf.Round(originalPosition.y / gridSize) * gridSize;
 
-        // ���ظ��º������λ��
         return new Vector2(snappedX, snappedY);
     }
 
 
-    // rotating �߼��������onDrag�Ĺ�����ͬʱ���ո����룬��rotate tile
+    // Rotate Tiles
     private void Update()
     {
         if (isDragging && Input.GetKeyDown(KeyCode.Space))
         {
-            // ��ת Tile 90 ��
+            // Only when dragging and hitting blankspace Button
             RotateTile();
         }
     }
 
-    // ��ת Tile 90 ��
+    // Rotate tile 90 degrees
     private void RotateTile()
     {
         rectTransform.Rotate(0, 0, 90); // ˳ʱ����ת 90 ��

@@ -146,6 +146,25 @@ public class GenerateGrid : MonoBehaviour
                     else
                     {
                         //if(ColorsOverlayed[i]) 跟 colorNow对比，然后替换colorNow，直到得到最终的颜色
+                        int whiteCount = 0; // 统计白色的个数
+
+                        foreach (int color in ColorsOverlayed)
+                        {
+                            if (color == 1)
+                            {
+                                whiteCount++; // 统计白色数量
+                            }
+                        }
+
+                        // 根据白色数量的奇偶性决定最终颜色
+                        if (whiteCount % 2 == 0)
+                        {
+                            colorNow = 1; // 偶数个白色，最终颜色是白色
+                        }
+                        else
+                        {
+                            colorNow = 0; // 奇数个白色，最终颜色是黑色
+                        }
                     }
                 }
 
