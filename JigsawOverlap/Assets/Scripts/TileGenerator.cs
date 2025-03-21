@@ -45,7 +45,7 @@ public class TileGenerator : MonoBehaviour
         int attempts = 0;
         int maxAttempts = 1000;
 
-        while (uniquePatterns.Count < 5 && attempts < maxAttempts) // 生成最多5个Tile
+        while (uniquePatterns.Count < 50 && attempts < maxAttempts) // 生成最多50个Tile
         {
             attempts++;
             int[,] pattern = GeneratePattern(size, blackCount, whiteCount);
@@ -148,7 +148,7 @@ public class TileGenerator : MonoBehaviour
         Debug.Log("Creating tile...");
 
         // 确认 tileParent 的大小和缩放
-        tileParent.GetComponent<RectTransform>().sizeDelta = new Vector2(600, 600);
+        tileParent.GetComponent<RectTransform>().sizeDelta = new Vector2(1500, 1500);
         tileParent.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
         tileParent.localScale = Vector3.one;
 
