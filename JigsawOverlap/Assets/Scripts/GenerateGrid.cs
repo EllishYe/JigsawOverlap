@@ -8,8 +8,12 @@ public class GenerateGrid : MonoBehaviour
 {
     // Start is called before the first frame update
     public GameObject Cell;
+    public GameObject CellParent;
     public List<GameObject> CellList;
     public List<Tile> TileList;
+
+    public Tile CurrentHoverTile;
+    public Tile CurrentSelectTile;
 
     [System.Serializable]
     public class Tile
@@ -90,11 +94,12 @@ public class GenerateGrid : MonoBehaviour
     }
     void Start()
     {
-
+        GenerateGridNow();
+        UpdateCellColor();
 
     }
 
-    private void GenerateGridNow()
+    public void GenerateGridNow()
     {
         for (int i = 0; i < 20; i++)
         {
@@ -104,6 +109,7 @@ public class GenerateGrid : MonoBehaviour
                 newcell.transform.position = new Vector3(i, -j, 0);
                 newcell.name = "Cell " + i.ToString() + "_" + j.ToString();
                 newcell.transform.GetChild(0).GetComponent<SpriteRenderer>().color = Color.gray;
+                newcell.transform.SetParent(CellParent.transform);
                 CellList.Add(newcell);
             }
         }
@@ -145,7 +151,6 @@ public class GenerateGrid : MonoBehaviour
                     }
                     else
                     {
-                        //if(ColorsOverlayed[i]) 跟 colorNow对比，然后替换colorNow，直到得到最终的颜色
                         int whiteCount = 0; // 统计白色的个数
 
                         foreach (int color in ColorsOverlayed)
@@ -190,10 +195,10 @@ public class GenerateGrid : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            GenerateGridNow();
-        }
+        // if (Input.GetKeyDown(KeyCode.Space))
+        // {
+        //     GenerateGridNow();
+        // }
 
         if (Input.GetKeyDown(KeyCode.U))
         {
@@ -207,6 +212,7 @@ public class GenerateGrid : MonoBehaviour
                 if (tile.Rotation != 0)
                     tile.RotateTile();
             }
+
             UpdateCellColor();
         }
 
