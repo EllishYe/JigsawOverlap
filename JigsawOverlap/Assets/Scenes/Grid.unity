@@ -272,10 +272,10 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a2078003456a14a41b9137a6f016d06f, type: 3}
---- !u!1 &953145392 stripped
+--- !u!1 &1169722475 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 6848113022508996630, guid: a2078003456a14a41b9137a6f016d06f, type: 3}
-  m_PrefabInstance: {fileID: 953145391}
+  m_CorrespondingSourceObject: {fileID: 4807732583671760330, guid: 84f5afa4e9b7c934faf4c16fa665d059, type: 3}
+  m_PrefabInstance: {fileID: 8994874287528445367}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1792826828
 GameObject:
@@ -308,6 +308,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1802526668 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1506992866952792121, guid: b6188ff6a1fec44409def03fea814f9d, type: 3}
+  m_PrefabInstance: {fileID: 6730965893453056063}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2087124695
 GameObject:
   m_ObjectHideFlags: 0
@@ -318,7 +323,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2087124697}
   - component: {fileID: 2087124696}
-  - component: {fileID: 2087124698}
+  - component: {fileID: 2087124699}
   m_Layer: 0
   m_Name: Controller
   m_TagString: Untagged
@@ -338,7 +343,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 521da38053007d24c814688eda251b38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Cell: {fileID: 953145392}
+  Cell: {fileID: 6848113022508996630, guid: a2078003456a14a41b9137a6f016d06f, type: 3}
   CellParent: {fileID: 1792826828}
   CellList: []
   TileList:
@@ -434,7 +439,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2087124698
+--- !u!114 &2087124699
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -447,7 +452,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GridSc: {fileID: 2087124696}
-  Tile_HightLight: {fileID: 0}
+  HoveredTile_HighLight: {fileID: 1802526668}
+  SelectedTile_HighLight: {fileID: 1169722475}
 --- !u!1001 &6730965893453056063
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -458,7 +464,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1506992866952792121, guid: b6188ff6a1fec44409def03fea814f9d, type: 3}
       propertyPath: m_Name
-      value: Tile_Highlight_Parent
+      value: Tile_Hovered_Parent
       objectReference: {fileID: 0}
     - target: {fileID: 2717799683325869840, guid: b6188ff6a1fec44409def03fea814f9d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -499,6 +505,10 @@ PrefabInstance:
     - target: {fileID: 2717799683325869840, guid: b6188ff6a1fec44409def03fea814f9d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5488979939677850256, guid: b6188ff6a1fec44409def03fea814f9d, type: 3}
+      propertyPath: m_Name
+      value: Tile_Hovered_HighLight
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -552,6 +562,10 @@ PrefabInstance:
     - target: {fileID: 2697309210994130248, guid: 84f5afa4e9b7c934faf4c16fa665d059, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4283749349838274599, guid: 84f5afa4e9b7c934faf4c16fa665d059, type: 3}
+      propertyPath: m_Name
+      value: Tile_Selected_HighLight
       objectReference: {fileID: 0}
     - target: {fileID: 4807732583671760330, guid: 84f5afa4e9b7c934faf4c16fa665d059, type: 3}
       propertyPath: m_Name
