@@ -10,12 +10,13 @@ using UnityEngine.UIElements;
 public class MouseController : MonoBehaviour
 {
     // Start is called before the first frame update
+    public bool CanRun = false;
 
     public GenerateGrid GridSc;
     public GameObject HoveredTile_HighLight;
     public GameObject SelectedTile_HighLight;
 
-    bool isTileHovered = false;
+    public bool isTileHovered = false;
 
 
     public
@@ -43,20 +44,19 @@ public class MouseController : MonoBehaviour
 
         isTileHovered = false;
 
-        // ¼ÆËãÊó±êËùÔÚµÄ Tile Î»ÖÃ£¨Íø¸ñ¶ÔÆë£©
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Úµï¿½ Tile Î»ï¿½Ã£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ë£©
         Vector3 mouseWorldPos = MousePos();
-        Vector2 mouseGridPos = new Vector2(Mathf.FloorToInt(mouseWorldPos.x), -(Mathf.FloorToInt(mouseWorldPos.y)+1));
-        
+        Vector2 mouseGridPos = new Vector2(Mathf.FloorToInt(mouseWorldPos.x), -(Mathf.FloorToInt(mouseWorldPos.y) + 1));
+
         //Debug.Log("Mouse Grid Position: " + mouseGridPos);
 
-        
-
-        foreach (var Tile in GridSc.TileList)
+        for (int i = 0; i < GridSc.TileList.Count; i++)
+        //foreach (var Tile in GridSc.TileList)
         {
-
+            //Debug.Log(i);
             //get tile Pos and Compare to Mouse Pos Range
-            Vector2 tilePos = Tile.TilePosition;
-            float tileWidth = 2; 
+            Vector2 tilePos = GridSc.TileList[i].TilePosition;
+            float tileWidth = 2;
             float tileHeight = 2;
             Vector2 tileBottomRight = new Vector2(tilePos.x + tileWidth, tilePos.y + tileHeight);
 
@@ -65,11 +65,11 @@ public class MouseController : MonoBehaviour
             mouseGridPos.y >= tilePos.y && mouseGridPos.y <= tileBottomRight.y)
             {
                 isTileHovered = true;
-
                 //Tile_HightLight.pos = Tile Pos
                 HoveredTile_HighLight.SetActive(true);
-                HoveredTile_HighLight.transform.position = new Vector3(Tile.TilePosition.x,- Tile.TilePosition.y, 0); // I have a question here!
+                HoveredTile_HighLight.transform.position = new Vector3(GridSc.TileList[i].TilePosition.x, -GridSc.TileList[i].TilePosition.y, 0); // I have a question here!
 
+                GridSc.CurrentHoverTile_Num = i;
             }
         }
 
@@ -81,47 +81,61 @@ public class MouseController : MonoBehaviour
 
     }
 
-    
 
-   
+
+
 
     // Update is called once per frame
     void Update()
     {
         //If mouse hover over any tile - highlight Tile
-        Check_MousePos_Hovers_TilePos();
-
-        //If Mouse Click && HoverOver Tile != null
-        //SelectTile = HoverTile
-        //SelectHighLight Pos 
-        
-        HandleMouseClick();
-
-        if (SelectedTile_HighLight.activeSelf)
+        if (!CanRun)
         {
-            Update_SelectedTilePos();
+            Check_MousePos_Hovers_TilePos();
+
+            //If Mouse Click && HoverOver Tile != null
+            //SelectTile = HoverTile
+            //SelectHighLight Pos 
+
+            HandleMouseClick();
+
+            if (SelectedTile_HighLight.activeSelf)
+            {
+                Update_SelectedTilePos();
+            }
         }
+
+        //Input p
+        //canrun = true
+
+        //Generate Collider
+
+
     }
 
     private void HandleMouseClick()
     {
-        if (Input.GetMouseButtonDown(0)) // ×ó¼üµã»÷
+        if (Input.GetMouseButtonDown(0)) // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         {
-            if (isTileHovered == true) // µã»÷µ½ÁËTile
+            if (isTileHovered == true) // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Tile
             {
                 SelectedTile_HighLight.SetActive(true);
                 SelectedTile_HighLight.transform.position = HoveredTile_HighLight.transform.position;
+
+                GridSc.CurrentSelectTile_Num = GridSc.CurrentHoverTile_Num;
             }
-            else // µã»÷¿Õ°×ÇøÓò£¬ÔòÈ¡Ïûµ±Ç°Ñ¡ÖÐµÄTile
+            else // ï¿½ï¿½ï¿½ï¿½Õ°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½Ç°Ñ¡ï¿½Ðµï¿½Tile
             {
                 SelectedTile_HighLight.SetActive(false);
             }
         }
-        else if (Input.GetKeyDown(KeyCode.Escape)) // °´ÏÂESC¼ü
+        else if (Input.GetKeyDown(KeyCode.Escape)) // ï¿½ï¿½ï¿½ï¿½ESCï¿½ï¿½
         {
             SelectedTile_HighLight.SetActive(false);
         }
     }
+
+
 
     void Update_SelectedTilePos()
     {
@@ -131,22 +145,32 @@ public class MouseController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.W))
         {
             newPosition.y += 1;
+            SelectedTile_HighLight.transform.position = newPosition;
+            GridSc.SetSelectTilePos(newPosition);
         }
         else if (Input.GetKeyDown(KeyCode.S))
         {
             newPosition.y -= 1;
+            SelectedTile_HighLight.transform.position = newPosition;
+            GridSc.SetSelectTilePos(newPosition);
         }
         else if (Input.GetKeyDown(KeyCode.D))
         {
             newPosition.x += 1;
+            SelectedTile_HighLight.transform.position = newPosition;
+            GridSc.SetSelectTilePos(newPosition);
         }
         else if (Input.GetKeyDown(KeyCode.A))
         {
             newPosition.x -= 1;
+            SelectedTile_HighLight.transform.position = newPosition;
+            GridSc.SetSelectTilePos(newPosition);
         }
 
-        // ¸üÐÂÎ»ÖÃ
-        SelectedTile_HighLight.transform.position = newPosition;
+        // ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½
+
+
+
 
     }
 

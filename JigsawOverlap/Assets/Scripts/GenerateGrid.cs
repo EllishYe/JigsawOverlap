@@ -12,8 +12,8 @@ public class GenerateGrid : MonoBehaviour
     public List<GameObject> CellList;
     public List<Tile> TileList;
 
-    public Tile CurrentHoverTile;
-    public Tile CurrentSelectTile;
+    public int CurrentHoverTile_Num;
+    public int CurrentSelectTile_Num;
 
     [System.Serializable]
     public class Tile
@@ -97,6 +97,12 @@ public class GenerateGrid : MonoBehaviour
         GenerateGridNow();
         UpdateCellColor();
 
+    }
+
+    public void SetSelectTilePos(Vector3 NewPosition)
+    {
+        TileList[CurrentSelectTile_Num].TilePosition = new Vector2(NewPosition.x, -NewPosition.y);
+        UpdateCellColor();
     }
 
     public void GenerateGridNow()
@@ -200,21 +206,21 @@ public class GenerateGrid : MonoBehaviour
         //     GenerateGridNow();
         // }
 
-        if (Input.GetKeyDown(KeyCode.U))
-        {
-            UpdateCellColor();
-        }
+        // if (Input.GetKeyDown(KeyCode.U))
+        // {
+        //     UpdateCellColor();
+        // }
 
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            foreach (Tile tile in TileList)
-            {
-                if (tile.Rotation != 0)
-                    tile.RotateTile();
-            }
+        // if (Input.GetKeyDown(KeyCode.R))
+        // {
+        //     foreach (Tile tile in TileList)
+        //     {
+        //         if (tile.Rotation != 0)
+        //             tile.RotateTile();
+        //     }
 
-            UpdateCellColor();
-        }
+        //     UpdateCellColor();
+        // }
 
 
     }
