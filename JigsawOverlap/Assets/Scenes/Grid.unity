@@ -392,38 +392,8 @@ MonoBehaviour:
         y: 1
         z: 1
     Rotation: 0
-  CurrentHoverTile:
-    TilePosition: {x: 0, y: 0}
-    Colors:
-      c0:
-        x: 0
-        y: 0
-        z: 0
-      c1:
-        x: 0
-        y: 0
-        z: 0
-      c2:
-        x: 0
-        y: 0
-        z: 0
-    Rotation: 0
-  CurrentSelectTile:
-    TilePosition: {x: 0, y: 0}
-    Colors:
-      c0:
-        x: 0
-        y: 0
-        z: 0
-      c1:
-        x: 0
-        y: 0
-        z: 0
-      c2:
-        x: 0
-        y: 0
-        z: 0
-    Rotation: 0
+  CurrentHoverTile_Num: 0
+  CurrentSelectTile_Num: 0
 --- !u!4 &2087124697
 Transform:
   m_ObjectHideFlags: 0
@@ -451,9 +421,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07941208fe388614fa3fea2d965b89e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CanRun: 0
   GridSc: {fileID: 2087124696}
   HoveredTile_HighLight: {fileID: 1802526668}
   SelectedTile_HighLight: {fileID: 1169722475}
+  isTileHovered: 0
 --- !u!1001 &6730965893453056063
 PrefabInstance:
   m_ObjectHideFlags: 0
